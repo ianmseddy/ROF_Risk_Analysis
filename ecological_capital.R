@@ -33,63 +33,36 @@ if (!file.exists(biomass)) {
   biomass <- rast(biomassFP)
 }
 
-forestCarbon <- "data/McMaster_WWF_forest_carbon_Ontario.tif"
-if (file.exists(forestCarbon)){ 
-  forestCarbon <- rast(forestCarbon)
-} else {
-  carbonData <- rast(file.path(currentData, paste0("carbon/McMaster_WWFCanada_forest_carbon_250m",
-                                                   "/McMaster_WWFCanada_forest_carbon_250m_kg-m2",
-                                                   "_version1.0.tif")))
-  forestCarbon <- reproducible::postProcess(carbonData, rasterToMatch = RTMraster, filename2 = forestCarbon, overwrite = TRUE)
-  rm(carbonData)
-}
-
 
 #peatland carbon - use the Hugelius dataset - has depth of peat but also SOC in hectagrams per m2
 #histosols are the non-permafrost peatlands
-histosolC <- prepInputs(url = "https://bolin.su.se/data/uploads/hugelius-2021-1.zip", 
-                      destinationPath = "data", 
-                      targetFile = "Histosol_SOC_hg_per_sqm_WGS84.tif",
-                      rasterToMatch = RTMraster, 
-                      filename2 = "histosol_SOC_hg_sqm_Ontario.tif")
-histelC <- prepInputs(url = "https://bolin.su.se/data/uploads/hugelius-2021-1.zip",
-                      destinationPath = "data",
-                      archive = "Hugelius_etal_2020_PNAS_grids/Grids_TIFF_WGS84.zip",
-                      targetFile = "Histel_SOC_hg_per_sqm_WGS84.tif",
-                      rasterToMatch = RTMraster,
-                      filename2 = "histel_SOC_hg_sqm_Ontario.tif")
-#agriculture
-classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open water", "turbid water", 
-                                        "shoreline", "mudflats", "marsh", "swamp", "fen", "bog", 
-                                        "heath", "sparse treed", "treed upland", "deciduous treed",
-                                        "mixed treed", "coniferous treed", "plantations - treed cultivated", 
-                                        "hedge rows", "disturbance", "cliff and talus", "alvar", 
-                                        "sand barren and dune", "open tallgrass prairie", 
-                                        "tallgrass savannah", "tallgrass woodland", 
-                                        "sand/gravel/mine tailings/extraction", 
-                                        "bedrock", "community/infrastructure", 
-                                        "agriculture and undifferentiated rural land use"), 
-                          class = c(-99, -9, 1:8, 10:28))
+# histosolC <- prepInputs(url = "https://bolin.su.se/data/uploads/hugelius-2021-1.zip", 
+#                       destinationPath = "data", 
+#                       targetFile = "Histosol_SOC_hg_per_sqm_WGS84.tif",
+#                       rasterToMatch = RTMraster, 
+#                       filename2 = "histosol_SOC_hg_sqm_Ontario.tif")
+# histelC <- prepInputs(url = "https://bolin.su.se/data/uploads/hugelius-2021-1.zip",
+#                       destinationPath = "data",
+#                       archive = "Hugelius_etal_2020_PNAS_grids/Grids_TIFF_WGS84.zip",
+#                       targetFile = "Histel_SOC_hg_per_sqm_WGS84.tif",
+#                       rasterToMatch = RTMraster,
+#                       filename2 = "histel_SOC_hg_sqm_Ontario.tif")
 
+merchWood <- prepInputs(url = paste0("http://ftp.maps.canada.ca/pub/nrcan_rncan/Forests_Foret/",
+                                     "canada-forests-attributes_attributs-forests-canada/2011-attributes_attributs-2011/",
+                                     "NFI_MODIS250m_2011_kNN_Structure_Volume_Merch_v1.tif"), 
+                        rasterToMatch = RTMraster, 
+                        destinationPath = "data")
+merchWood <- mask(merchWood, mask = RTMraster, 
+                  filename = "outputs/MerchWood_Ontario.tif", 
+                  datatype = "INT2U")
+#note that the NA value is wrong, 65535
 
+#from https://data.4tu.nl/collections/Carbon_storage_and_distribution_in_terrestrial_ecosystems_of_Canada/5421810/3
+#DOI: https://doi.org/10.1016/j.geoderma.2021.115402
+#prepInputs is not working - I think the .0.tif is the culprit?
+soilC <- paste0("data/16686154/McMaster_WWFCanada_soil_carbon_250m_kg-m2_version3.0/",
+                "McMaster_WWFCanada_soil_carbon1m_250m_kg-m2_version3.0.tif")
+soilC <- raster(soilC) %>% postProcess(., rasterToMatch = RTMraster, studyArea = studyAreaSF)
+writeRaster(soilC, "outputs/SOC_1mDepth_kg-m2_Ontario.tif")
 
-lcc <- "data/OLCC_V2_Ontario.tif"
-if (file.exists(lcc)){
-  lcc <- rast(lcc) 
-} else {
-  lccraw <- rast("data/OLCC_V2.tif")
-  lcc <- terra::project(lccraw, y = RTMrast,
-                        method = 'near', mask = TRUE, 
-                        filename = lcc, overwrite = TRUE)
-}
-
-if (file.exists("outputs/agriculturalLC.tif")) {
-  ag <- rast("outputs/agriculturalLC.tif")
-} else {
-  
-  lccVals <- as.data.table(lcc[])
-  lccVals[, newVal := ifelse(OLCC_V2 == 28, 1, 0)]
-  lccVals[is.na(OLCC_V2), newVal := NA]
-  ag <- terra::init(lcc, lccVals$newVal)
-  terra::write.raster(ag, "outputs/agriculturalLC.tif")
-}             

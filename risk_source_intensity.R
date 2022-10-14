@@ -18,10 +18,10 @@ writeRaster(roadRaster, "data/rasterized_roads_Ontario.tif", overwrite = TRUE)
 roadRaster <- terra::rast("data/rasterized_roads_Ontario.tif")
 roadMat <- terra::focalMat(x = roadRaster, d = 1000, type = "circle")
 roadDensity <- terra::focal(x = roadRaster, w = roadMat, fun = "sum", na.rm = TRUE)
-roadDensity <- terra::aggregate(roadDensity, fact = 5, fun = "mean", filename = "outputs/roadDensity_50m.tif")
-# writeRaster(roadDistance, filename = "outputs/distance_To_MNRF_roads.tif")
-#this raster is in a gdb, and I do not know a way to read a raster from gdb (sf expects vector)
-#I can extract it but not through prepInputs. Fix later
+roadDensity <- terra::aggregate(roadDensity, fact = 5, 
+                                fun = "mean", filename = "outputs/roadDensity_50m_Ontario.tif")
+
+
 classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open water", "turbid water", 
                                         "shoreline", "mudflats", "marsh", "swamp", "fen", "bog", 
                                         "heath", "sparse treed", "treed upland", "deciduous treed",
@@ -33,7 +33,7 @@ classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open wat
                                         "bedrock", "community/infrastructure", 
                                         "agriculture and undifferentiated rural land use"), 
                           class = c(-99, -9, 1:8, 10:28))
-
+#This raster was inside a gdb and I could not find a way to extract it (sf does not work with rasters)
 lcc <- "data/OLCC_V2_Ontario.tif"
 if (file.exists(lcc)){
   lcc <- rast(lcc) 
@@ -43,10 +43,30 @@ if (file.exists(lcc)){
                         method = 'near', mask = TRUE, 
                         filename = lcc, overwrite = TRUE)
 }
+#terra reclassify is too slow
+urbanVals <- terra::values(lcc)
+urbLCC <- classLegend[className == "community/infrastructure"]$class
+urbanVals[urbanVals != urbLCC] <- 0
+urbanVals[urbanVals > 0] <- 1
+urbanMat <- terra::focalMat(x = lcc, d = 1000, type = "circle")
+urbanDensity <- init(lcc, urbanVals) %>%
+  focal(., w = urbanMat, fun = sum, na.rm = TRUE)
+urbanDensity <- terra::mask(urbanDensity, RTMrast, 
+                            filename = "outputs/urbanDensity_Ontario.tif", 
+                            overwrite = TRUE)
+rm(urbanVals, urbLCC)
 
-lccraw
-urbanCover[urbanCover != classLegend[className == "community/infrastructure"]$class] <- NA
-
+#farming
+farmLCC <- classLegend[className == "agriculture and undifferentiated rural land use"]$class
+farmVals <- values(lcc)
+farmVals[farmVals != farmLCC] <- 0
+farmVals[farmVals > 0] <- 1
+farmDensity <- init(lcc, farmVals) %>%
+  focal(., w = urbanMat, fun = sum, na.rm= TRUE)
+farmDensity <- terra::mask(farmDensity, RTMrast, 
+                           filename = "outputs/farmDensity_Ontario.tif", 
+                           overwrite = TRUE)
+rm(farmLCC, urbanMat, farmVals)
 
 #harvest - 
 if (!file.exists("data/C2C_harvest_mask_Ontario.tif")) {
@@ -57,6 +77,8 @@ if (!file.exists("data/C2C_harvest_mask_Ontario.tif")) {
   harvest <- harvest$harvestMask
   write.raster(harvest, "data/C2C_harvest_mask_Ontario.tif")
 }
+
+
 
 #maybe we do a 1 km focal radius? 
 harvestMat <- terra::focalMat(harvest, d = 1000, type = "circle", fillNA = TRUE)
