@@ -86,4 +86,8 @@ harvestIntensity <- focal(harvest, harvestMat, filename = "outputs/harvestIntens
 rm(harvestMat, harvest)
 # fishing and hunting areas
 
+#we will rasterize the streams and then calculate distance, masking the waterbodies to be 0
+#watercourses are available on Ontario Geohub without a stable URL
+
+streams <- terra::vect(x = paste0(")
 

@@ -16,4 +16,4 @@ library(terra)
 library(sf)
 library(reproducible)
 setDTthreads(2)
-Require("PredictiveEcology/climateData") #for MDC
+
