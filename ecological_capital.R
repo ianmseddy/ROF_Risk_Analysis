@@ -30,7 +30,7 @@ writeRaster(soilC, "outputs/SOC_1mDepth_kg-m2_Ontario.tif")
 
 
 #soil agricultural potential
-https://geohub.lio.gov.on.ca/datasets/ontarioca11::soil-survey-complex/about
+# https://geohub.lio.gov.on.ca/datasets/ontarioca11::soil-survey-complex/about
 soilSurvey <- prepInputs(url = "https://www.gisapplication.lrc.gov.on.ca/fmedatadownload/Packages/SOILOMAF.zip",
                          destinationPath = "data", 
                          fun = "st_read")
