@@ -1,13 +1,24 @@
 
 options("reproducible.cachePath" = "cache")
 options("reproducible.useCache" = TRUE)
-currentData <- "C:/Ian/data/"
+
+#directory structure
+checkPath("data", create = TRUE)
+checkPath("outputs", create = TRUE)
+checkPath("cache", create = TRUE)
 
 #need a study area to bound this stuff 
-Canada <- vect("C:/Ian/Data/Canada/lpr_000b16a_e/lpr_000b16a_e.shp")
+Canada <- prepInputs(url = "https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lpr_000b16a_e.zip", 
+                     destinationPath = "data",
+                     fun = "st_read")
 Ontario <- Canada[Canada$PRENAME == "Ontario",]
-studyArea <- Ontario
-studyAreaSF <- sf::st_as_sf(studyArea)
+if (!file.exists("data/Ontario.shp")) {
+  st_write(Ontario, "data/Ontario.shp")
+}
+
+
+studyAreaSF <- st_read("data/Ontario.shp")
+
 biomassFP <- file.path("data/kNN_Biomass_2011.tif")
 if (file.exists(biomassFP)) {
   RTMrast <- rast(biomassFP)
