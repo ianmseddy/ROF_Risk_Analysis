@@ -15,9 +15,12 @@ merchWood <- prepInputs(url = paste0("http://ftp.maps.canada.ca/pub/nrcan_rncan/
                                      "NFI_MODIS250m_2011_kNN_Structure_Volume_Merch_v1.tif"), 
                         rasterToMatch = RTMraster, 
                         destinationPath = "data")
-merchWood <- mask(merchWood, mask = RTMraster, 
+merchWood[merchWood < 0] <- 0
+#nonforest should read 0 
+merchWood <- mask(merchWood, mask = RTMraster,
                   filename = "outputs/MerchWood_Ontario.tif", 
-                  datatype = "INT2U")
+                  overwrite = TRUE)
+
 #note that the NA value is wrong, 65535
 
 #from https://data.4tu.nl/collections/Carbon_storage_and_distribution_in_terrestrial_ecosystems_of_Canada/5421810/3
@@ -53,11 +56,11 @@ tempDT <- tempDT[, .(sum1 = PERCENT1 * CLI1r,
                      sum2 = PERCENT2 * CLI2r,
                      sum3 = PERCENT3 * CLI3r)] #when percent is 0 it will evaluate to NA
 tempDT <- tempDT[, names(tempDT) := lapply(.SD, nafill, fill = 0)]
-tempDT[, weightedRecalss := sum1 + sum2 + sum3]
-soilSurvey$weightedSoilClass <- tempDT$weightedRecalss
-soilSurveyRas <- fasterize::fasterize(soilSurvey, raster = RTMraster,background = 0, 
+tempDT[, weightedReclass := sum1 + sum2 + sum3]
+soilSurvey$weightedSoilClass <- tempDT$weightedReclass
+soilSurveyRas <- fasterize::fasterize(soilSurvey, raster = RTMraster, 
                                       field = "weightedSoilClass")
-soilSurveyRas <- mask(soilSurveyRas, RTMraster)
-writeRaster(soilSurveyRas, "outputs/weightedSoilSurveyComplex.tif")
+soilSurveyRas <- mask(soilSurveyRas, RTMraster, filename = "outputs/weightedSoilSurveyComplex.tif", 
+                      overwrite = TRUE)
 
 

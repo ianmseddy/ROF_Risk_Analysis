@@ -19,7 +19,9 @@ roadRaster <- terra::rast("data/rasterized_roads_Ontario.tif")
 roadMat <- terra::focalMat(x = roadRaster, d = 1000, type = "circle")
 roadDensity <- terra::focal(x = roadRaster, w = roadMat, fun = "sum", na.rm = TRUE)
 roadDensity <- terra::aggregate(roadDensity, fact = 5, 
-                                fun = "mean", filename = "outputs/roadDensity_50m_Ontario.tif")
+                                fun = "mean")
+roadDensity[is.na(roadDensity)] <- 0
+roadDensity <- mask(roadDensity, mask = RTMrast, filename = "outputs/roadDensity_50m_Ontario.tif")
 
 
 classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open water", "turbid water", 
@@ -33,7 +35,11 @@ classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open wat
                                         "bedrock", "community/infrastructure", 
                                         "agriculture and undifferentiated rural land use"), 
                           class = c(-99, -9, 1:8, 10:28))
+
 #This raster was inside a gdb and I could not find a way to extract it (sf does not work with rasters)
+# https://geohub.lio.gov.on.ca/documents/ontario-land-cover-compilation-v-2-0
+#it must be downloaded and exported from the file geodatabase
+#to my knowledge, no R function can export a raster in a gdb.
 lcc <- "data/OLCC_V2_Ontario.tif"
 if (file.exists(lcc)){
   lcc <- rast(lcc) 
