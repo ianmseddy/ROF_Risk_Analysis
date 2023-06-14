@@ -1,4 +1,3 @@
-
 options("reproducible.cachePath" = "cache")
 options("reproducible.useCache" = TRUE)
 
@@ -7,7 +6,7 @@ checkPath("data", create = TRUE)
 checkPath("outputs", create = TRUE)
 checkPath("cache", create = TRUE)
 
-#need a study area to bound this stuff 
+#prepare study area
 Canada <- prepInputs(url = "https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lpr_000b16a_e.zip", 
                      destinationPath = "data",
                      fun = "st_read")

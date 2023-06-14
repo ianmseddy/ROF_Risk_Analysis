@@ -1,7 +1,8 @@
-#this is climateData::makeMDC but modified to deal with hardcoded filepaths
-#(as the data used is from AdaptWest instead of ClimateNA, thus different naming convention)
-#additionally I want to calculate MDC normals, instead of annual MDC,
-#and finally, the degree variables do not require conversion from tenths of a degree to degree
+# this function is PredictiveEcology/climateData::makeMDC
+# however modified to deal with hardcoded filepaths
+# (as the data used is from AdaptWest instead of ClimateNA, thus different naming convention)
+# additionally I want to calculate MDC normals, instead of annual MDC,
+# and finally, the degree variables do not require conversion from tenths of a degree to degree
 
 makeMDC_ROF <- function (inputPath, years = NULL, droughtMonths = 4:9) {
   
