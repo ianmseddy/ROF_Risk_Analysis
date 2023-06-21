@@ -68,11 +68,15 @@ classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open wat
 lcc <- "data/OLCC_V2_Ontario.tif"
 if (file.exists(lcc)){
   lcc <- rast(lcc) 
-} else {
+} else if (file.exists("data/OLCC_V2.tif")) {
   lccraw <- rast("data/OLCC_V2.tif")
   lcc <- terra::project(lccraw, y = RTMrast,
                         method = 'near', mask = TRUE, 
                         filename = lcc, overwrite = TRUE)
+  rm(lccraw)
+} else {
+  stop(paste0("please download the ontario landcover from: ",
+              "https://geohub.lio.gov.on.ca/documents/ontario-land-cover-compilation-v-2-0"))
 }
 #terra reclassify is too slow
 urbanVals <- terra::values(lcc)
