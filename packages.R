@@ -40,4 +40,4 @@ if (makeSnapshot){
   Require::pkgSnapshot()
 }
 
-
+options("reproducible.cachePath" = "cache")

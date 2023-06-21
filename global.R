@@ -15,3 +15,7 @@ source("template_objects.R")
 #build ecological capital files 
 source("ecological_capital.R")
 #the sources of ecological capital incldue soil carbon, merchantable wood, and aboveground biomass 
+
+source("vulnerability.R")
+
+source("risk_source.R")

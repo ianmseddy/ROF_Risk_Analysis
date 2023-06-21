@@ -1,4 +1,4 @@
-# reclassify to natural breaks as this is what Effah wants
+# reclassify to natural breaks following Wang 2021
 library(magrittr)
 
 vals <- list.files("outputs", pattern = "tif$", full.names = TRUE) %>%
