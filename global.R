@@ -22,3 +22,4 @@ source("risk_source.R")
 # the sources of risk include areas with higher density of roads, timber harvest, farmland, 
 # and urban development, due to presumed increaes in pollutants, fire risk, wildlife conflict, etc
 
+
