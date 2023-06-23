@@ -2,7 +2,7 @@
 .user <- Sys.info()[["user"]]
 prjDir <- normalizePath(getwd(), winslash = "/")
 if (basename(prjDir) != "ROF_Risk_Analysis") {
-  stop("please read this file from the .Rproject")
+  stop("please read this file from the .Rproject file")
 }
 
 #create a pkgDir outside of the default, to ensure package versions are the same
