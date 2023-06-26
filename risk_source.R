@@ -1,6 +1,6 @@
 ###distance to roads 
 #Terra doesn't have a cellFromLine function, and griddedDistance does not accept vectors
-#I am trying to create a raster with non-empty cells representing lines
+
 
 #generate a road raster
 if (!file.exists("outputs/roadDensity_50m_Ontario.tif")){
@@ -26,10 +26,6 @@ if (!file.exists("outputs/roadDensity_50m_Ontario.tif")){
   roads_mnrf$foo <- 1
   temp2 <- rasterize(roads_mnrf, roadTemplate, field = "foo")
   
-  # roads <- Cache(buffer, x = roads, width = 50, userTags = c("buffer", "roads"))
-  # roads_mnrf <- Cache(erase, roads_mnrf, roads) #removes the roads inside the 50m buffer
-  # I don't believe this is necessary as the error is generally less than 50m 
-  # disappearing when represented as a raster, and this operation is incredibly slow 
   
   #merge them
   roadRaster <- sum(temp, temp2, na.rm = TRUE)
@@ -64,26 +60,12 @@ classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open wat
 # This raster is inside a gdb and I could not find a way to extract it (sf does not work with rasters)
 # https://geohub.lio.gov.on.ca/documents/ontario-land-cover-compilation-v-2-0
 # it must be downloaded and exported from the file geodatabase
-# terra isn't presently capable of doing this 
-lcc <- "data/OLCC_V2_Ontario.tif"
-# if (file.exists(lcc)){
-#   lcc <- rast(lcc) 
-# } else if (file.exists("data/OLCC_V2.tif")) {
-#   lccraw <- rast("data/OLCC_V2.tif")
-#   lcc <- terra::project(lccraw, y = RTMrast,
-#                         method = 'near', mask = TRUE, 
-#                         filename = lcc, overwrite = TRUE)
-#   rm(lccraw)
-# } else {
-#   lcc <- 
-#   stop(paste0("please download the ontario landcover from: ",
-#               "https://geohub.lio.gov.on.ca/documents/ontario-land-cover-compilation-v-2-0"))
-# }
-
+# terra isn't presently capable of doing this, so I hosted the tif on googledrive 
 lcc <- prepInputs(url = "https://drive.google.com/file/d/1r2v0NyH5fJSy3edOi14Eb20BFj0Y0h36/view?usp=drive_link",
                   destinationPath = "data",
-                  cropTo = RTMrast, maskTo = Ontario, projectTo = RTMrast,
+                  cropTo = Ontario, maskTo = Ontario, projectTo = RTMrast,
                   method = "near",
+                  overwrite = TRUE,
                   fun = "terra::rast",
                   writeTo = "OLCC_V2_Ontario2.tif")
 

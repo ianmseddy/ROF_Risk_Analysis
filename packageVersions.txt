@@ -21,8 +21,10 @@
 "gargle","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.5.0",NA,NA,NA,NA
 "glue","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.6.2",NA,NA,NA,NA
 "googledrive","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","2.1.1",NA,NA,NA,NA
+"httpuv","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.6.11",NA,NA,NA,NA
 "httr","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.4.6",NA,NA,NA,NA
 "jsonlite","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.8.5",NA,NA,NA,NA
+"later","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.3.1",NA,NA,NA,NA
 "lifecycle","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.0.3",NA,NA,NA,NA
 "lobstr","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.1.2",NA,NA,NA,NA
 "magrittr","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","2.0.3",NA,NA,NA,NA
@@ -33,13 +35,14 @@
 "pkgconfig","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","2.0.3",NA,NA,NA,NA
 "plogr","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","0.2.0",NA,NA,NA,NA
 "prettyunits","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.1.1",NA,NA,NA,NA
+"promises","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.2.0.1",NA,NA,NA,NA
 "proxy","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","0.4-27",NA,NA,NA,NA
 "purrr","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.0.1",NA,NA,NA,NA
 "R6","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","2.5.1",NA,NA,NA,NA
 "rappdirs","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","0.3.3",NA,NA,NA,NA
 "raster","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","3.6-14",NA,NA,NA,NA
 "Rcpp","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.0.10",NA,NA,NA,NA
-"reproducible","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.2.16","reproducible","PredictiveEcology","HEAD","cdc7f629a2ff7574a88a3c9c85a4e824fb5fa53b"
+"reproducible","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","2.0.4.9000","reproducible","PredictiveEcology","development","c28eafa8c5b14213d10d99f5c3cf2e8299a8bc04"
 "Require","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","0.2.6",NA,NA,NA,NA
 "rlang","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","1.1.1",NA,NA,NA,NA
 "RSQLite","C:/Users/ieddy/AppData/Roaming/R/data/R/ROF_Risk_Analysis/packages/x86_64-w64-mingw32/4.2","2.2.20",NA,NA,NA,NA

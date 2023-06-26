@@ -37,7 +37,7 @@ if (!file.exists("outputs/MerchWood_Ontario.tif")){
 # the file has been re-hosted on Google Drive
 soilC <- prepInputs(url = "https://drive.google.com/file/d/1gMxDj12QHfwKbKsJBu9PXboydCBQ3pCM/view?usp=drive_link", 
                     targetFile = "McMaster_WWFCanada_soil_carbon1m_250m_kg-m2_version3.0.tif",
-                    cropTo = RTMrast,
+                    cropTo = Ontario,
                     projectTo = RTMrast,
                     maskTo = Ontario,
                     fun = "terra::rast",
