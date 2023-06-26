@@ -37,41 +37,15 @@ if (!file.exists("outputs/MerchWood_Ontario.tif")){
 # the file has been re-hosted on Google Drive
 soilC <- prepInputs(url = "https://drive.google.com/file/d/1gMxDj12QHfwKbKsJBu9PXboydCBQ3pCM/view?usp=drive_link", 
                     targetFile = "McMaster_WWFCanada_soil_carbon1m_250m_kg-m2_version3.0.tif",
-                    rasterToMatch = RTMrast,
-                    studyArea = Ontario,
+                    cropTo = RTMrast,
+                    projectTo = RTMrast,
+                    maskTo = Ontario,
                     fun = "terra::rast",
                     destinationPath = "data", 
-                    overwrite = TRUE,
-                    filename2 = "outputs/SOC_1mDepth_km-m2_Ontario.tif")
+                    writeTo = "outputs/SOC_1mDepth_km-m2_Ontario.tif")
 
 #soil agricultural potential - this dataset is incomplete and so not very useful
 # https://geohub.lio.gov.on.ca/datasets/ontarioca11::soil-survey-complex/about
 # soilSurvey <- prepInputs(url = "https://www.gisapplication.lrc.gov.on.ca/fmedatadownload/Packages/SOILOMAF.zip",
 #                          destinationPath = "data", 
 #                          fun = "st_read")
-# soilSurvey <- st_transform(soilSurvey, crs = crs(RTMraster))
-# #reclassify organic to 0 
-# soilSurvey$CLI1r <- soilSurvey$CLI1
-# soilSurvey$CLI1r[soilSurvey$CLI1r %in% c("W", "O")] <- 0
-# soilSurvey$CLI1r <- as.numeric(soilSurvey$CLI1r)
-# #2 
-# soilSurvey$CLI2r <- soilSurvey$CLI2
-# soilSurvey$CLI2r[soilSurvey$CLI2r %in% c("W", "O")] <- 0
-# soilSurvey$CLI2r <- as.numeric(soilSurvey$CLI2r)
-# #3
-# soilSurvey$CLI3r <- soilSurvey$CLI3
-# soilSurvey$CLI3r[soilSurvey$CLI3r %in% c("W", "O")] <- 0
-# soilSurvey$CLI3r <- as.numeric(soilSurvey$CLI3r)
-# 
-# tempDT <- as.data.table(soilSurvey)
-# tempDT <- tempDT[, .(sum1 = PERCENT1 * CLI1r,
-#                      sum2 = PERCENT2 * CLI2r,
-#                      sum3 = PERCENT3 * CLI3r)] #when percent is 0 it will evaluate to NA
-# tempDT <- tempDT[, names(tempDT) := lapply(.SD, nafill, fill = 0)]
-# tempDT[, weightedReclass := sum1 + sum2 + sum3]
-# soilSurvey$weightedSoilClass <- tempDT$weightedReclass
-# soilSurveyRas <- rasterize(soilSurvey, RTMrast, field = "weightedSoilClass")
-# soilSurveyRas <- mask(soilSurveyRas, RTMraster, filename = "outputs/weightedSoilSurveyComplex.tif", 
-#                       overwrite = TRUE)
-
-

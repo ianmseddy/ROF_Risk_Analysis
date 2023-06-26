@@ -1,0 +1,11 @@
+ReadMe
+
+Open this project in Rstudio 
+Open the global file (global.R)
+
+Execute the scripts in order to build all the template objects.
+The current study area is the province of Ontario, and a 250-metre raster is used as the template.
+Some raster operations were done at the scale of 50m, to preserve some detail
+Currently this project does not classify the outputs using natural breaks, 
+though that can be in ArcGIS
+

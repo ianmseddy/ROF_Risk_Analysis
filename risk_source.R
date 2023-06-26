@@ -66,18 +66,27 @@ classLegend <- data.table(className = c("Other", "cloud/shadow", "clear open wat
 # it must be downloaded and exported from the file geodatabase
 # terra isn't presently capable of doing this 
 lcc <- "data/OLCC_V2_Ontario.tif"
-if (file.exists(lcc)){
-  lcc <- rast(lcc) 
-} else if (file.exists("data/OLCC_V2.tif")) {
-  lccraw <- rast("data/OLCC_V2.tif")
-  lcc <- terra::project(lccraw, y = RTMrast,
-                        method = 'near', mask = TRUE, 
-                        filename = lcc, overwrite = TRUE)
-  rm(lccraw)
-} else {
-  stop(paste0("please download the ontario landcover from: ",
-              "https://geohub.lio.gov.on.ca/documents/ontario-land-cover-compilation-v-2-0"))
-}
+# if (file.exists(lcc)){
+#   lcc <- rast(lcc) 
+# } else if (file.exists("data/OLCC_V2.tif")) {
+#   lccraw <- rast("data/OLCC_V2.tif")
+#   lcc <- terra::project(lccraw, y = RTMrast,
+#                         method = 'near', mask = TRUE, 
+#                         filename = lcc, overwrite = TRUE)
+#   rm(lccraw)
+# } else {
+#   lcc <- 
+#   stop(paste0("please download the ontario landcover from: ",
+#               "https://geohub.lio.gov.on.ca/documents/ontario-land-cover-compilation-v-2-0"))
+# }
+
+lcc <- prepInputs(url = "https://drive.google.com/file/d/1r2v0NyH5fJSy3edOi14Eb20BFj0Y0h36/view?usp=drive_link",
+                  destinationPath = "data",
+                  cropTo = RTMrast, maskTo = Ontario, projectTo = RTMrast,
+                  method = "near",
+                  fun = "terra::rast",
+                  writeTo = "OLCC_V2_Ontario2.tif")
+
 #terra reclassify is too slow
 urbanVals <- terra::values(lcc)
 urbLCC <- classLegend[className == "community/infrastructure"]$class
